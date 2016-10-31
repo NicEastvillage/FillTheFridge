@@ -11,6 +11,13 @@ public class BlockPiece : MonoBehaviour {
         transform.position = LevelController.instance.GetWorldPosition(x, y, z);
     }
 
+    public void SetMaterial(Material mat)
+    {
+        if (mat == null) return;
+
+        GetComponent<MeshRenderer>().material = mat;
+    }
+
     public int x
     {
         get

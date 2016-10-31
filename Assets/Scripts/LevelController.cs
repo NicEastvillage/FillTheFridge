@@ -12,6 +12,7 @@ public class LevelController : MonoBehaviour {
     public int sizeZ = 5;
     public GameObject blockPiecePrefab;
     public TextAsset levelxml;
+    public Material defaultBlockMaterial;
 
     [Header("Variables")]
     public List<Block> allBlocks;
@@ -97,9 +98,17 @@ public class LevelController : MonoBehaviour {
 
         foreach (XmlNode block in blockNodelist)
         {
+            //create block
             Block b = (new GameObject("block")).AddComponent<Block>();
             allBlocks.Add(b);
 
+            //create material
+            Material mat = new Material(defaultBlockMaterial);
+            mat.color = BlockColor.FromString(block.Attributes["color"].Value);
+
+            b.SetMaterial(mat);
+
+            //find children (pieces)
             XmlNodeList pieceNodelist = block.SelectNodes("piece");
 
             foreach (XmlNode piece in pieceNodelist)
