@@ -6,6 +6,14 @@ using System;
 
 public class LevelController : MonoBehaviour {
 
+    [Header("Scene Objects")]
+    public GameObject boxAreaPlaneXposi;
+    public GameObject boxAreaPlaneXnega;
+    public GameObject boxAreaPlaneYposi;
+    public GameObject boxAreaPlaneYnega;
+    public GameObject boxAreaPlaneZposi;
+    public GameObject boxAreaPlaneZnega;
+
     [Header("Settings")]
     public int sizeX = 5;
     public int sizeY = 5;
@@ -33,6 +41,7 @@ public class LevelController : MonoBehaviour {
         ReadLevelXml(levelxml);
         CreateSnapPointVisuals();
         ShowSnapPoints(showSnapPoints);
+        UpdateAreaBoxSize();
     }
 	
 	// Update is called once per frame
@@ -51,6 +60,22 @@ public class LevelController : MonoBehaviour {
         {
             snap.SetActive(showSnapPoints);
         }
+    }
+
+    void UpdateAreaBoxSize()
+    {
+        boxAreaPlaneXposi.transform.position = new Vector3(sizeX / 2f, 0, 0);
+        boxAreaPlaneXposi.transform.localScale = new Vector3(0, sizeY, sizeZ);
+        boxAreaPlaneXnega.transform.position = new Vector3(- sizeX / 2f, 0, 0);
+        boxAreaPlaneXnega.transform.localScale = new Vector3(0, sizeY, sizeZ);
+        boxAreaPlaneYposi.transform.position = new Vector3(0, sizeY / 2f, 0);
+        boxAreaPlaneYposi.transform.localScale = new Vector3(sizeX, 0, sizeZ);
+        boxAreaPlaneYnega.transform.position = new Vector3(0, - sizeY / 2f, 0);
+        boxAreaPlaneYnega.transform.localScale = new Vector3(sizeX, 0, sizeZ);
+        boxAreaPlaneZposi.transform.position = new Vector3(0, 0, sizeZ / 2f);
+        boxAreaPlaneZposi.transform.localScale = new Vector3(sizeX, sizeY, 0);
+        boxAreaPlaneZnega.transform.position = new Vector3(0, 0, - sizeZ / 2f);
+        boxAreaPlaneZnega.transform.localScale = new Vector3(sizeX, sizeY, 0);
     }
 
     void CreateSnapPointVisuals()
