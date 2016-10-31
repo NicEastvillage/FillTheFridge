@@ -10,12 +10,14 @@ public class LevelController : MonoBehaviour {
     public int sizeX = 5;
     public int sizeY = 5;
     public int sizeZ = 5;
+    public GameObject snapPointPrefab;
     public GameObject blockPiecePrefab;
     public TextAsset levelxml;
     public Material defaultBlockMaterial;
 
     [Header("Variables")]
     public List<Block> allBlocks;
+    public List<GameObject> snapPointObjects;
     
     public static LevelController instance;
 
@@ -27,12 +29,34 @@ public class LevelController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         ReadLevelXml(levelxml);
+        CreateSnapPointVisuals();
     }
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+
+    void CreateSnapPointVisuals()
+    {
+        List<GameObject> temp = new List<GameObject>(snapPointObjects);
+        foreach (GameObject snap in temp)
+        {
+            snapPointObjects.Remove(snap);
+            Destroy(snap.gameObject);
+        }
+
+        for (int x = 0; x < sizeX; x++)
+        {
+            for (int y = 0; y < sizeY; y++)
+            {
+                for (int z = 0; z < sizeZ; z++)
+                {
+                    snapPointObjects.Add(Instantiate(snapPointPrefab, GetWorldPosition(x, y, z), Quaternion.identity, transform) as GameObject);
+                }
+            }
+        }
+    }
 
     public bool IsWithinArea(int x, int y, int z)
     {
@@ -94,7 +118,22 @@ public class LevelController : MonoBehaviour {
 
         // TODO: foreach level ... 
         // this time we only read 1 level
-        XmlNodeList blockNodelist = levelNodelist[0].SelectNodes("block");
+        XmlNode l = levelNodelist[0];
+
+        //set size
+        try
+        {
+            sizeX = Int32.Parse(l.Attributes["x"].Value);
+            sizeY = Int32.Parse(l.Attributes["y"].Value);
+            sizeZ = Int32.Parse(l.Attributes["z"].Value);
+        }
+        catch (FormatException e)
+        {
+            Debug.LogError(e.Message);
+        }
+
+        //find all blocks
+        XmlNodeList blockNodelist = l.SelectNodes("block");
 
         foreach (XmlNode block in blockNodelist)
         {

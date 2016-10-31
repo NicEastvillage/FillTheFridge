@@ -20,15 +20,23 @@ public class Block : MonoBehaviour {
 
 	public void AddPiece(int x, int y, int z)
     {
-        BlockPiece p = LevelController.instance.GetBlockPiece(x, y, z);
-        if (p == null)
+        if (LevelController.instance.IsWithinArea(x, y, z))
         {
-            p = (Instantiate(LevelController.instance.blockPiecePrefab, transform) as GameObject).GetComponent<BlockPiece>();
-            p.Init(x, y, z);
-            p.SetMaterial(material);
+
+            BlockPiece p = LevelController.instance.GetBlockPiece(x, y, z);
+            if (p == null)
+            {
+                p = (Instantiate(LevelController.instance.blockPiecePrefab, transform) as GameObject).GetComponent<BlockPiece>();
+                p.Init(x, y, z);
+                p.SetMaterial(material);
+            }
+            else
+            {
+                Debug.Log("Adding block piece failed. Position is occupied!");
+            }
         } else
         {
-            Debug.Log("Adding block piece failed. Position is occupied!");
+            Debug.LogError("Adding block piece failed. Position is out of bounds!");
         }
     }
 
