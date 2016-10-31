@@ -1,4 +1,4 @@
-<level name="testlevel">
+<level name="testlevel" x="5" y="5" z="5">
 	<block color="red">
 		<piece x="1" y="0" z="1"></piece>
 		<piece x="2" y="0" z="1"></piece>
