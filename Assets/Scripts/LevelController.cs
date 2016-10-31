@@ -14,10 +14,12 @@ public class LevelController : MonoBehaviour {
     public GameObject blockPiecePrefab;
     public TextAsset levelxml;
     public Material defaultBlockMaterial;
+    public string snapToggleKey = "q";
 
     [Header("Variables")]
     public List<Block> allBlocks;
     public List<GameObject> snapPointObjects;
+    public bool showSnapPoints = false;
     
     public static LevelController instance;
 
@@ -30,12 +32,26 @@ public class LevelController : MonoBehaviour {
 	void Start () {
         ReadLevelXml(levelxml);
         CreateSnapPointVisuals();
+        ShowSnapPoints(showSnapPoints);
     }
 	
 	// Update is called once per frame
 	void Update () {
-	
+        //snap points on/ff
+        if (Input.GetKeyDown(snapToggleKey))
+        {
+            ShowSnapPoints(!showSnapPoints);
+        }
 	}
+
+    public void ShowSnapPoints(bool t)
+    {
+        showSnapPoints = t;
+        foreach (GameObject snap in snapPointObjects)
+        {
+            snap.SetActive(showSnapPoints);
+        }
+    }
 
     void CreateSnapPointVisuals()
     {
