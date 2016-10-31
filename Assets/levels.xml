@@ -4,4 +4,16 @@
 		<piece x="2" y="0" z="1"></piece>
 		<piece x="2" y="1" z="1"></piece>
 	</block>
+	<block color="blue">
+		<piece x="3" y="3" z="2"></piece>
+		<piece x="3" y="3" z="3"></piece>
+		<piece x="3" y="3" z="4"></piece>
+		<piece x="3" y="4" z="3"></piece>
+		<piece x="3" y="4" z="4"></piece>
+	</block>
+	<block color="magenta">
+		<piece x="2" y="1" z="4"></piece>
+		<piece x="3" y="1" z="4"></piece>
+		<piece x="4" y="1" z="4"></piece>
+	</block>
 </level>
