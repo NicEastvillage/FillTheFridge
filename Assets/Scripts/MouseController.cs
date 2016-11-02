@@ -9,6 +9,8 @@ public class MouseController : MonoBehaviour {
 
     [Header("Variables")]
     public Transform moveIndicator;
+    public GameObject draggedObject;
+    public Vector3 draggingNormal;
 
     public static MouseController instance;
 
@@ -39,9 +41,32 @@ public class MouseController : MonoBehaviour {
 
             moveIndicator.gameObject.SetActive(true);
 
+            if (Input.GetMouseButtonDown(0))
+            {
+                draggedObject = hitInfo.collider.gameObject;
+                draggingNormal = hitInfo.normal;
+            }
+
         } else
         {
             moveIndicator.gameObject.SetActive(false);
+        }
+
+        if (draggedObject != null)
+        {
+            Vector3 wantedPos = camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
+            Vector3 newPos = draggedObject.transform.position;
+
+            if (draggingNormal != Vector3.forward) newPos.z = wantedPos.z;
+            if (draggingNormal != Vector3.right) newPos.x = wantedPos.x;
+            if (draggingNormal != Vector3.up) newPos.y = wantedPos.y;
+
+            draggedObject.transform.position = newPos;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            draggedObject = null;
         }
 	}
 }
