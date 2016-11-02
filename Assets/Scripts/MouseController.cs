@@ -54,7 +54,7 @@ public class MouseController : MonoBehaviour {
 
         if (draggedObject != null)
         {
-            Vector3 wantedPos = camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
+            Vector3 wantedPos = camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));
             Vector3 newPos = draggedObject.transform.position;
 
             if (draggingNormal != Vector3.forward) newPos.z = wantedPos.z;
