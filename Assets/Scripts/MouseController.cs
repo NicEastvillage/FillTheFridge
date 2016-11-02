@@ -9,8 +9,10 @@ public class MouseController : MonoBehaviour {
 
     [Header("Variables")]
     public Transform moveIndicator;
-    public GameObject draggedObject;
-    public Vector3 draggingNormal;
+    public GameObject dragObject;
+    public Vector3 dragNormal;
+    public Vector3 dragHitPoint;
+    public Vector3 dragObjectRelativeToHitPoint;
 
     public static MouseController instance;
 
@@ -43,8 +45,10 @@ public class MouseController : MonoBehaviour {
 
             if (Input.GetMouseButtonDown(0))
             {
-                draggedObject = hitInfo.collider.gameObject;
-                draggingNormal = hitInfo.normal;
+                dragObject = hitInfo.collider.gameObject;
+                dragNormal = hitInfo.normal;
+                dragHitPoint = hitInfo.point;
+                dragObjectRelativeToHitPoint = dragObject.transform.position - dragHitPoint;
             }
 
         } else
@@ -52,21 +56,32 @@ public class MouseController : MonoBehaviour {
             moveIndicator.gameObject.SetActive(false);
         }
 
-        if (draggedObject != null)
+        if (dragObject != null)
         {
-            Vector3 wantedPos = camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));
-            Vector3 newPos = draggedObject.transform.position;
+            Plane nPlane = new Plane(dragNormal, dragHitPoint);
+            float dist = -1;
+            if (nPlane.Raycast(ray, out dist)) { };
 
-            if (draggingNormal != Vector3.forward) newPos.z = wantedPos.z;
-            if (draggingNormal != Vector3.right) newPos.x = wantedPos.x;
-            if (draggingNormal != Vector3.up) newPos.y = wantedPos.y;
+            if (dist != -1)
+            {
+                /*
+                Vector3 wantedPos = camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));
+                Vector3 newPos = draggedObject.transform.position;
 
-            draggedObject.transform.position = newPos;
+                if (draggingNormal != Vector3.forward) newPos.z = wantedPos.z;
+                if (draggingNormal != Vector3.right) newPos.x = wantedPos.x;
+                if (draggingNormal != Vector3.up) newPos.y = wantedPos.y;
+                */
+
+                Vector3 newPos = ray.GetPoint(dist) + dragObjectRelativeToHitPoint;
+
+                dragObject.transform.position = newPos;
+            }
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            draggedObject = null;
+            dragObject = null;
         }
 	}
 }
