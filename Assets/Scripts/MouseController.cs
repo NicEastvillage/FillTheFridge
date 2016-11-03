@@ -9,10 +9,10 @@ public class MouseController : MonoBehaviour {
 
     [Header("Variables")]
     public Transform moveIndicator;
-    public GameObject dragObject;
+    public Block dragBlock;
     public Vector3 dragNormal;
     public Vector3 dragHitPoint;
-    public Vector3 dragObjectRelativeToHitPoint;
+    public Vector3 dragblockRelativeToHitPoint;
 
     public static MouseController instance;
 
@@ -38,25 +38,28 @@ public class MouseController : MonoBehaviour {
 
         if (Physics.Raycast(ray, out hitInfo))
         {
-            moveIndicator.transform.position = hitInfo.collider.gameObject.transform.position + hitInfo.normal * 0.51f;
-            moveIndicator.transform.rotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
-
-            moveIndicator.gameObject.SetActive(true);
-
-            if (Input.GetMouseButtonDown(0))
+            BlockPiece p = hitInfo.collider.GetComponent<BlockPiece>();
+            if (p != null)
             {
-                dragObject = hitInfo.collider.gameObject;
-                dragNormal = hitInfo.normal;
-                dragHitPoint = hitInfo.point;
-                dragObjectRelativeToHitPoint = dragObject.transform.position - dragHitPoint;
-            }
+                moveIndicator.transform.position = hitInfo.collider.gameObject.transform.position + hitInfo.normal * 0.51f;
+                moveIndicator.transform.rotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
 
+                moveIndicator.gameObject.SetActive(true);
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    dragBlock = p.block;
+                    dragNormal = hitInfo.normal;
+                    dragHitPoint = hitInfo.point;
+                    dragblockRelativeToHitPoint = dragBlock.transform.position - dragHitPoint;
+                }
+            }
         } else
         {
             moveIndicator.gameObject.SetActive(false);
         }
 
-        if (dragObject != null)
+        if (dragBlock != null)
         {
             Plane nPlane = new Plane(dragNormal, dragHitPoint);
             float dist = -1;
@@ -64,24 +67,15 @@ public class MouseController : MonoBehaviour {
 
             if (dist != -1)
             {
-                /*
-                Vector3 wantedPos = camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));
-                Vector3 newPos = draggedObject.transform.position;
+                Vector3 newPos = ray.GetPoint(dist) + dragblockRelativeToHitPoint;
 
-                if (draggingNormal != Vector3.forward) newPos.z = wantedPos.z;
-                if (draggingNormal != Vector3.right) newPos.x = wantedPos.x;
-                if (draggingNormal != Vector3.up) newPos.y = wantedPos.y;
-                */
-
-                Vector3 newPos = ray.GetPoint(dist) + dragObjectRelativeToHitPoint;
-
-                dragObject.transform.position = newPos;
+                dragBlock.transform.position = newPos;
             }
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            dragObject = null;
+            dragBlock = null;
         }
 	}
 }

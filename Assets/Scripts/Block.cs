@@ -27,7 +27,7 @@ public class Block : MonoBehaviour {
             if (p == null)
             {
                 p = (Instantiate(LevelController.instance.blockPiecePrefab, transform) as GameObject).GetComponent<BlockPiece>();
-                p.Init(x, y, z);
+                p.Init(this, x, y, z);
                 p.SetMaterial(material);
             }
             else
