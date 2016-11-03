@@ -75,6 +75,7 @@ public class MouseController : MonoBehaviour {
 
         if (Input.GetMouseButtonUp(0))
         {
+            dragBlock.SnapBasedOnPosition();
             dragBlock = null;
         }
 	}

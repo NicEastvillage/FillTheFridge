@@ -51,4 +51,9 @@ public class Block : MonoBehaviour {
         }
         return null;
     }
+
+    public void SnapBasedOnPosition()
+    {
+        transform.position = LevelController.instance.GetNearestSnap(transform.position);
+    }
 }
