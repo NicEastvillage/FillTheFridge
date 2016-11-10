@@ -6,6 +6,16 @@ public class Block : MonoBehaviour {
 
     public Material material;
     public List<BlockPiece> pieces = new List<BlockPiece>();
+    public new Rigidbody rigidbody;
+
+    public void Init(Material mat)
+    {
+        rigidbody = gameObject.AddComponent<Rigidbody>();
+        rigidbody.useGravity = false;
+        rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+
+        SetMaterial(mat);
+    }
 
     public void SetMaterial(Material mat)
     {

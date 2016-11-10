@@ -52,6 +52,7 @@ public class MouseController : MonoBehaviour {
                     dragNormal = hitInfo.normal;
                     dragHitPoint = hitInfo.point;
                     dragblockRelativeToHitPoint = dragBlock.transform.position - dragHitPoint;
+                    dragBlock.rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
                 }
             }
         } else
@@ -69,14 +70,20 @@ public class MouseController : MonoBehaviour {
             {
                 Vector3 newPos = ray.GetPoint(dist) + dragblockRelativeToHitPoint;
 
-                dragBlock.transform.position = newPos;
+                dragBlock.rigidbody.MovePosition(newPos);
+
+                //dragBlock.transform.position = newPos;
             }
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            dragBlock.SnapBasedOnPosition();
-            dragBlock = null;
+            if (dragBlock != null)
+            {
+                dragBlock.SnapBasedOnPosition();
+                dragBlock.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+                dragBlock = null;
+            }
         }
 	}
 }

@@ -203,7 +203,7 @@ public class LevelController : MonoBehaviour {
             Material mat = new Material(defaultBlockMaterial);
             mat.color = BlockColor.FromString(block.Attributes["color"].Value);
 
-            b.SetMaterial(mat);
+            b.Init(mat);
 
             //find children (pieces)
             XmlNodeList pieceNodelist = block.SelectNodes("piece");
