@@ -6,6 +6,16 @@ public class Block : MonoBehaviour {
 
     public Material material;
     public List<BlockPiece> pieces = new List<BlockPiece>();
+    public new Rigidbody rigidbody;
+
+    public void Init(Material mat)
+    {
+        rigidbody = gameObject.AddComponent<Rigidbody>();
+        rigidbody.useGravity = false;
+        rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+
+        SetMaterial(mat);
+    }
 
     public void SetMaterial(Material mat)
     {
@@ -27,7 +37,7 @@ public class Block : MonoBehaviour {
             if (p == null)
             {
                 p = (Instantiate(LevelController.instance.blockPiecePrefab, transform) as GameObject).GetComponent<BlockPiece>();
-                p.Init(x, y, z);
+                p.Init(this, x, y, z);
                 p.SetMaterial(material);
             }
             else
@@ -50,5 +60,10 @@ public class Block : MonoBehaviour {
             }
         }
         return null;
+    }
+
+    public void SnapBasedOnPosition()
+    {
+        transform.position = LevelController.instance.GetNearestSnap(transform.position);
     }
 }
