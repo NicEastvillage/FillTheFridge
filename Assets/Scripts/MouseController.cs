@@ -75,7 +75,9 @@ public class MouseController : MonoBehaviour {
 
                 dragBlock.rigidbody.velocity = mov;
 
-                //dragBlock.transform.position = newPos;
+                // TODO: Test this in the future. Maybes it is better:
+                // http://answers.unity3d.com/questions/425403/detect-collisions-with-object-following-mouse-move.html
+                // It uses a spring joint to pull the object to the mouse position
             }
         }
 
