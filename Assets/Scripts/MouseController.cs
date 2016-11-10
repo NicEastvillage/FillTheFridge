@@ -69,8 +69,9 @@ public class MouseController : MonoBehaviour {
             if (dist != -1)
             {
                 Vector3 newPos = ray.GetPoint(dist) + dragblockRelativeToHitPoint;
+                Vector3 mov = newPos - dragBlock.transform.position;
 
-                dragBlock.rigidbody.MovePosition(newPos);
+                dragBlock.rigidbody.velocity = mov;
 
                 //dragBlock.transform.position = newPos;
             }
@@ -82,6 +83,7 @@ public class MouseController : MonoBehaviour {
             {
                 dragBlock.SnapBasedOnPosition();
                 dragBlock.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+                dragBlock.rigidbody.velocity = Vector3.zero;
                 dragBlock = null;
             }
         }
