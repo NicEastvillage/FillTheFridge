@@ -6,6 +6,7 @@ public class MouseController : MonoBehaviour {
     [Header("Scene and settings")]
     public Camera camera;
     public GameObject moveIndicatorPrefab;
+    public float blockDragVelocityLimit = 5;
 
     [Header("Variables")]
     public Transform moveIndicator;
@@ -70,6 +71,7 @@ public class MouseController : MonoBehaviour {
             {
                 Vector3 newPos = ray.GetPoint(dist) + dragblockRelativeToHitPoint;
                 Vector3 mov = newPos - dragBlock.transform.position;
+                if (mov.magnitude > blockDragVelocityLimit) mov *= blockDragVelocityLimit / mov.magnitude;
 
                 dragBlock.rigidbody.velocity = mov;
 
