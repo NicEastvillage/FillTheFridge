@@ -4,9 +4,11 @@ using System.Collections;
 public class BlockPiece : MonoBehaviour {
 
     public Vector3 coords;
+    public Block block;
 
-    public void Init(int x, int y, int z)
+    public void Init(Block b, int x, int y, int z)
     {
+        block = b;
         coords = new Vector3(x, y, z);
         transform.position = LevelController.instance.GetWorldPosition(x, y, z);
     }

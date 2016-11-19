@@ -148,6 +148,22 @@ public class LevelController : MonoBehaviour {
         }
     }
 
+    public Vector3 GetNearestSnap(Vector3 position)
+    {
+        float nx, ny, nz;
+
+        if (sizeX % 2 == 0) nx = Mathf.RoundToInt(position.x - 0.5f) + 0.5f;
+        else nx = Mathf.RoundToInt(position.x);
+
+        if (sizeY % 2 == 0) ny = Mathf.RoundToInt(position.y - 0.5f) + 0.5f;
+        else ny = Mathf.RoundToInt(position.y);
+
+        if (sizeZ % 2 == 0) nz = Mathf.RoundToInt(position.z - 0.5f) + 0.5f;
+        else nz = Mathf.RoundToInt(position.z);
+
+        return new Vector3(nx, ny, nz);
+    }
+
     void ReadLevelXml(TextAsset asset)
     {
         // See: http://unitynoobs.blogspot.dk/2011/02/xml-loading-data-from-xml-file.html
@@ -180,13 +196,14 @@ public class LevelController : MonoBehaviour {
         {
             //create block
             Block b = (new GameObject("block")).AddComponent<Block>();
+            b.transform.position = GetWorldPosition(0, 0, 0);
             allBlocks.Add(b);
 
             //create material
             Material mat = new Material(defaultBlockMaterial);
             mat.color = BlockColor.FromString(block.Attributes["color"].Value);
 
-            b.SetMaterial(mat);
+            b.Init(mat);
 
             //find children (pieces)
             XmlNodeList pieceNodelist = block.SelectNodes("piece");
