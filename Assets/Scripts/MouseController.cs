@@ -14,6 +14,7 @@ public class MouseController : MonoBehaviour {
     public Vector3 dragNormal;
     public Vector3 dragHitPoint;
     public Vector3 dragblockRelativeToHitPoint;
+    public SpringJoint dragSpringJoint;
 
     public static MouseController instance;
 
@@ -54,6 +55,9 @@ public class MouseController : MonoBehaviour {
                     dragHitPoint = hitInfo.point;
                     dragblockRelativeToHitPoint = dragBlock.transform.position - dragHitPoint;
                     dragBlock.rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+
+                    dragSpringJoint.connectedBody = dragBlock.rigidbody;
+                    dragSpringJoint.connectedAnchor = new Vector3();
                 }
             }
         } else
@@ -70,14 +74,7 @@ public class MouseController : MonoBehaviour {
             if (dist != -1)
             {
                 Vector3 newPos = ray.GetPoint(dist) + dragblockRelativeToHitPoint;
-                Vector3 mov = newPos - dragBlock.transform.position;
-                if (mov.magnitude > blockDragVelocityLimit) mov *= blockDragVelocityLimit / mov.magnitude;
-
-                dragBlock.rigidbody.velocity = mov;
-
-                // TODO: Test this in the future. Maybes it is better:
-                // http://answers.unity3d.com/questions/425403/detect-collisions-with-object-following-mouse-move.html
-                // It uses a spring joint to pull the object to the mouse position
+                dragSpringJoint.transform.position = newPos;
             }
         }
 
@@ -85,6 +82,9 @@ public class MouseController : MonoBehaviour {
         {
             if (dragBlock != null)
             {
+                dragSpringJoint.connectedBody = null;
+                dragSpringJoint.transform.position = new Vector3();
+
                 dragBlock.SnapBasedOnPosition();
                 dragBlock.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
                 dragBlock.rigidbody.velocity = Vector3.zero;
