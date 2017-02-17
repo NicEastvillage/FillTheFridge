@@ -65,17 +65,17 @@ public class LevelController : MonoBehaviour {
     void UpdateAreaBoxSize()
     {
         boxAreaPlaneXposi.transform.position = new Vector3(sizeX / 2f, 0, 0);
-        boxAreaPlaneXposi.transform.localScale = new Vector3(0, sizeY, sizeZ);
+        boxAreaPlaneXposi.transform.localScale = new Vector3(1, sizeY, sizeZ);
         boxAreaPlaneXnega.transform.position = new Vector3(- sizeX / 2f, 0, 0);
-        boxAreaPlaneXnega.transform.localScale = new Vector3(0, sizeY, sizeZ);
+        boxAreaPlaneXnega.transform.localScale = new Vector3(1, sizeY, sizeZ);
         boxAreaPlaneYposi.transform.position = new Vector3(0, sizeY / 2f, 0);
-        boxAreaPlaneYposi.transform.localScale = new Vector3(sizeX, 0, sizeZ);
+        boxAreaPlaneYposi.transform.localScale = new Vector3(sizeX, 1, sizeZ);
         boxAreaPlaneYnega.transform.position = new Vector3(0, - sizeY / 2f, 0);
-        boxAreaPlaneYnega.transform.localScale = new Vector3(sizeX, 0, sizeZ);
+        boxAreaPlaneYnega.transform.localScale = new Vector3(sizeX, 1, sizeZ);
         boxAreaPlaneZposi.transform.position = new Vector3(0, 0, sizeZ / 2f);
-        boxAreaPlaneZposi.transform.localScale = new Vector3(sizeX, sizeY, 0);
+        boxAreaPlaneZposi.transform.localScale = new Vector3(sizeX, sizeY, 1);
         boxAreaPlaneZnega.transform.position = new Vector3(0, 0, - sizeZ / 2f);
-        boxAreaPlaneZnega.transform.localScale = new Vector3(sizeX, sizeY, 0);
+        boxAreaPlaneZnega.transform.localScale = new Vector3(sizeX, sizeY, 1);
     }
 
     void CreateSnapPointVisuals()
