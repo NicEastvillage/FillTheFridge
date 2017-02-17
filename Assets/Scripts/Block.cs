@@ -10,6 +10,8 @@ public class Block : MonoBehaviour {
 
     public void Init(Material mat)
     {
+        gameObject.layer = 8; // block layer
+
         rigidbody = gameObject.AddComponent<Rigidbody>();
         rigidbody.useGravity = false;
         rigidbody.constraints = RigidbodyConstraints.FreezeAll;
@@ -39,6 +41,7 @@ public class Block : MonoBehaviour {
                 p = (Instantiate(LevelController.instance.blockPiecePrefab, transform) as GameObject).GetComponent<BlockPiece>();
                 p.Init(this, x, y, z);
                 p.SetMaterial(material);
+                pieces.Add(p);
             }
             else
             {
